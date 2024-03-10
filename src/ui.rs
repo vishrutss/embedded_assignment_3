@@ -2,7 +2,7 @@ use crate::*;
 
 struct UiState {
     levels: [u32; 3],
-    frame_rate: u64,
+    frame_rate: u32,
 }
 
 impl UiState {
@@ -47,8 +47,10 @@ impl Ui {
             self.state.levels[2] = self.knob.measure().await;
         } else if self.button_b.is_low() {
             self.state.levels[1] = self.knob.measure().await;
-        } else {
+        } else if self.button_a.is_low() && self.button_b.is_low() {
             self.state.levels[0] = self.knob.measure().await;
+        } else {
+            self.state.frame_rate = self.knob.measure().await;
         }
         set_rgb_levels(|rgb| {
             *rgb = self.state.levels;
@@ -58,15 +60,24 @@ impl Ui {
         loop {
             let level = self.knob.measure().await;
             let rgb_level;
-            if self.button_a.is_low() {
-                rgb_level = 2;
-            } else if self.button_b.is_low() {
-                rgb_level = 1;
-            } else {
-                rgb_level = 0;
-            }
-            if level != self.state.levels[rgb_level] {
-                self.state.levels[rgb_level] = level;
+            if self.button_a.is_low() || self.button_b.is_low() {
+                if self.button_a.is_low() && self.button_b.is_low() {
+                    rgb_level = 0;
+                } else if self.button_b.is_low() {
+                    rgb_level = 1;
+                } else {
+                    rgb_level = 2;
+                }
+                if level != self.state.levels[rgb_level] {
+                    self.state.levels[rgb_level] = level;
+                    self.state.show();
+                    set_rgb_levels(|rgb| {
+                        *rgb = self.state.levels;
+                    })
+                    .await;
+                }
+            } else if level != self.state.frame_rate {
+                self.state.frame_rate = (level * 10) + 10;
                 self.state.show();
                 set_rgb_levels(|rgb| {
                     *rgb = self.state.levels;
