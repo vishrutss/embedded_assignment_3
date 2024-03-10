@@ -26,7 +26,21 @@ use microbit_bsp::{
 use num_traits::float::FloatCore;
 
 pub static RGB_LEVELS: Mutex<ThreadModeRawMutex, [u32; 3]> = Mutex::new([0; 3]);
+pub static FRAME_RATE: Mutex<ThreadModeRawMutex, u32> = Mutex::new(10);
 pub const LEVELS: u32 = 16;
+
+async fn get_frame_rate() -> u32 {
+    let frame_rate = FRAME_RATE.lock().await;
+    *frame_rate
+}
+
+async fn set_frame_rate<F>(setter: F)
+where
+    F: FnOnce(&mut u32),
+{
+    let mut frame_rate = FRAME_RATE.lock().await;
+    setter(&mut frame_rate)
+}
 
 async fn get_rgb_levels() -> [u32; 3] {
     let rgb_levels = RGB_LEVELS.lock().await;

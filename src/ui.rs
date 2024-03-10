@@ -49,8 +49,6 @@ impl Ui {
             self.state.levels[1] = self.knob.measure().await;
         } else if self.button_a.is_low() && self.button_b.is_low() {
             self.state.levels[0] = self.knob.measure().await;
-        } else {
-            self.state.frame_rate = self.knob.measure().await;
         }
         set_rgb_levels(|rgb| {
             *rgb = self.state.levels;
@@ -69,7 +67,7 @@ impl Ui {
                     rgb_level = 2;
                 }
                 if level != self.state.levels[rgb_level] {
-                    self.state.levels[rgb_level] = level;
+                    self.state.levels[rgb_level] = level as u32;
                     self.state.show();
                     set_rgb_levels(|rgb| {
                         *rgb = self.state.levels;
@@ -79,8 +77,8 @@ impl Ui {
             } else if level != self.state.frame_rate {
                 self.state.frame_rate = (level * 10) + 10;
                 self.state.show();
-                set_rgb_levels(|rgb| {
-                    *rgb = self.state.levels;
+                set_frame_rate(|frame_rate| {
+                    *frame_rate = self.state.frame_rate;
                 })
                 .await;
             }
