@@ -6,6 +6,8 @@ struct UiState {
 }
 
 impl UiState {
+    
+    /// Displays the current state of the LED.
     fn show(&self) {
         let names = ["red", "green", "blue"];
         rprintln!();
@@ -33,6 +35,7 @@ pub struct Ui {
 }
 
 impl Ui {
+    /// Creates a new `Ui` instance with the given knob and buttons.
     pub fn new(knob: Knob, button_a: Button, button_b: Button) -> Self {
         Self {
             knob,
@@ -42,6 +45,7 @@ impl Ui {
         }
     }
 
+    /// Runs the user interface loop, continuously updating the LED based on user input.
     pub async fn run(&mut self) -> ! {
         if self.button_a.is_low() {
             self.state.levels[2] = self.knob.measure().await;
