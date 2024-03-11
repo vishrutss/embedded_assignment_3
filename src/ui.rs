@@ -6,7 +6,6 @@ struct UiState {
 }
 
 impl UiState {
-    
     /// Displays the current state of the LED.
     fn show(&self) {
         let names = ["red", "green", "blue"];
@@ -78,7 +77,7 @@ impl Ui {
                     })
                     .await;
                 }
-            } else if level != self.state.frame_rate {
+            } else if (level * 10) + 10 != self.state.frame_rate {
                 self.state.frame_rate = (level * 10) + 10;
                 self.state.show();
                 set_frame_rate(|frame_rate| {
