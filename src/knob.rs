@@ -5,11 +5,19 @@ pub type Adc = saadc::Saadc<'static, 1>;
 pub struct Knob(Adc);
 
 impl Knob {
+    /// Creates a new `Knob` instance with the specified ADC.
+    /// ### Arguments
+    /// * `adc` - The ADC to be used for measuring values.
+    /// ### Returns
+    /// A new `Knob` instance.
     pub async fn new(adc: Adc) -> Self {
         adc.calibrate().await;
         Self(adc)
     }
 
+    /// Measures the value of the knob.
+    /// ### Returns
+    /// The measured value as a `u32`.
     pub async fn measure(&mut self) -> u32 {
         let mut buf = [0];
         self.0.sample(&mut buf).await;
