@@ -1,5 +1,5 @@
 # rgbcal: RGB LED calibration tool
-Bart Massey 2024
+Bart Massey and Vishrut Sharma 2024
 
 This tool is designed to find out a decent frame rate and
 maximum RGB component values to produce a white-looking RGB
@@ -62,7 +62,7 @@ will eat CPU for no reason.
 I think the frame rate is probably set higher than it needs
 to be right now: it can be tuned lower.
 
-
+## Submitted by: Vishrut Sharma
 ## Results
 I acheived a good white by setting the red, green, and blue levels
 to 15, 8, and 9 respectively. And a frame rate of 60 was the lowest I could go without the LED blinking.
@@ -70,4 +70,19 @@ to 15, 8, and 9 respectively. And a frame rate of 60 was the lowest I could go w
 red: 15 <br>
 green: 8 <br>
 blue: 9 <br>
-frame rate: 60 
+frame rate: 60
+
+## Writeup
+For this assignment I first started by wiring the RGB LED and the potentiometer to the MB2. The initial code worked as expected and
+generated a blue light which could then be controlled by the potentiometer. By having a look at the code that was provided, I was able to add support for the green and red colors as well.
+
+I then added code in `ui.rs` to control the frame rate and the color levels using the potentiometer and also the ability to switch
+the function of the potentiometer using the buttons on the MB2.
+
+The main challenge was to share the frame rate value between `ui.rs` and `rgb.rs`. First I had a look at how the RGB values were being shared between `ui.rs` and `rgb.rs` and then I used the same approach to share the frame rate value as well which was to use set and get functions in `main.rs` similar to the ones used for the RGB values.
+
+I then called the get function in `rgb.rs` to get the frame rate value and passed it to `frame_tick_time` which calculated the `tick_time` and then used it to set the frame rate.
+
+I then tested the code by changing the frame rate and the RGB values using the potentiometer and found the best values for the RGB LED to produce a white light.
+
+Overall, I had a great time working on this assignment.
