@@ -65,10 +65,10 @@ to be right now: it can be tuned lower.
 ## Submitted by: Vishrut Sharma
 ## Results
 I acheived a good white by setting the red, green, and blue levels
-to 15, 8, and 9 respectively. And a frame rate of 60 was the lowest I could go without the LED blinking.
+to 15, 4, and 9 respectively. And a frame rate of 60 was the lowest I could go without the LED blinking.
 
 red: 15 <br>
-green: 8 <br>
+green: 4 <br>
 blue: 9 <br>
 frame rate: 60
 
